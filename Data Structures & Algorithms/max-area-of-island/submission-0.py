@@ -1,0 +1,28 @@
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        ans = 0
+        directions = [(0,-1),(-1,0),(1,0),(0,1)]
+        m, n = len(grid), len(grid[0])
+        
+        def bfs(i, j):
+            size = 0
+            queue = deque()
+            if grid[i][j] == 1:
+                queue.append((i, j))
+                grid[i][j] = 0
+            while queue:
+                x, y = queue.popleft()
+                size += 1
+                for dx, dy in directions:
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < m and 0 <= ny < n and grid[nx][ny] == 1:
+                        grid[nx][ny] = 0
+                        queue.append((nx, ny))
+            return size
+        
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    ans = max(ans, bfs(i, j))
+                    
+        return ans
